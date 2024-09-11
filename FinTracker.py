@@ -4,7 +4,7 @@ import tkinter as tk
 from tkinter import messagebox
 from datetime import date
 
-filepath = os.path.join(os.path.dirname(os.path.abspath(__file__)),"data", "transactions.csv")
+filepath = os.path.join(os.path.expanduser("~"), "FinTracker", "data", "transactions.csv")
 
 def initialize_transactions_file():
     directory = os.path.dirname(filepath)
