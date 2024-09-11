@@ -20,4 +20,5 @@ Once the app is launched, you'll see the following options:
 - **Refresh**: Recalculates the total income, expenses, and current balance and displays the updated values.
 - **View Data**: Opens the transactions.csv file for a detailed look at your transactions in your default spreadsheet editor.
 
-![FinTracker](https://github.com/user-attachments/assets/c67d31d0-14e4-44c8-bc8a-75392e6b64e4)
+![FinTracker](https://github.com/user-attachments/assets/5152b3fd-8bb2-4072-9b81-e731a2989474)
+
