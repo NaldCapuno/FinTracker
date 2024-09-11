@@ -13,14 +13,11 @@ FinTracker is a simple personal finance tracking application built using Python 
 - csv and os modules (included with Python)
 
 ## How to Use
-1. Download the ZIP File:
-    - Go to the [Releases](https://github.com/NaldCapuno/FinTracker/releases) page on GitHub and download the latest release ZIP file.
+1. Download the EXE File:
+    - Go to the [Releases](https://github.com/NaldCapuno/FinTracker/releases) page on GitHub and download the latest release EXE file.
 
-2. Extract the ZIP File:
-    - Extract the contents of the ZIP file to a directory of your choice.
-
-3. Run the Application:
-    - Open the **FinTracker.pyw** file directly in your file explorer. Double-click the file to run it using the default Python interpreter installed on your system.
+2. Run the Application:
+    - Open **FinTracker.exe** and begin tracking your finances.
 
 ## How it Works
 Once the app is launched, you'll see the following options:
@@ -29,7 +26,3 @@ Once the app is launched, you'll see the following options:
 - **View Data**: Opens the transactions.csv file for a detailed look at your transactions in your default spreadsheet editor.
 
 ![FinTracker](https://github.com/user-attachments/assets/c67d31d0-14e4-44c8-bc8a-75392e6b64e4)
-
-## File Structure
-- **FinTracker.pyw**: Main application script.
-- **data/transactions.csv**: CSV file where transactions are stored.
