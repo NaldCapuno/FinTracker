@@ -2,9 +2,11 @@ import csv
 import os
 import tkinter as tk
 from tkinter import messagebox
-from datetime import date
+from datetime import datetime
 
 filepath = os.path.join(os.path.expanduser("~"), "FinTracker", "data", "transactions.csv")
+date_format = "%d/%m/%Y"
+current_date = datetime.today().strftime(date_format)
 
 def initialize_transactions_file():
     directory = os.path.dirname(filepath)
@@ -48,19 +50,34 @@ def refresh():
     total_ex = 0.0
 
     try:
+        with open(filepath, mode='r', newline='') as file:
+            reader = csv.reader(file)
+            next(reader, None)
+            first_row = next(reader, None)
+            if first_row:
+                start_date = datetime.strptime(first_row[0], "%d/%m/%Y")
+                last_date = start_date
+                for row in reader:
+                    last_date = datetime.strptime(row[0], "%d/%m/%Y")
+            else:
+                raise ValueError("No data rows in file")
+
         with open(filepath, mode="r", newline="") as file:
             reader = csv.reader(file)
-            next(reader)
+            next(reader, None)
             for row in reader:
                 total_in += float(row[1]) if row[1] else 0
                 total_ex += float(row[2]) if row[2] else 0
+                
     except Exception as e:
         messagebox.showerror("Error", f"An error occurred while reading the file: {e}")
 
     total = total_in - total_ex
     text_box.config(state="normal")
     text_box.delete(1.0, tk.END)
-    text_box.insert(tk.END, f"Balance: {total}\n")
+    text_box.insert(tk.END, f"{start_date.strftime("%b %d, %Y")} - {last_date.strftime("%b %d, %Y")}")
+    text_box.insert(tk.END, f"\n------------------------------")
+    text_box.insert(tk.END, f"\nBalance: {total}\n")
     text_box.insert(tk.END, f"\nTotal Income:  {total_in}")
     text_box.insert(tk.END, f"\nTotal Expense: {total_ex}")
     text_box.config(state="disabled")
@@ -91,7 +108,7 @@ def submit():
     try:
         with open(filepath, mode="a", newline="") as file:
             writer = csv.writer(file)
-            writer.writerow([date.today(), amount_in, amount_ex])
+            writer.writerow([current_date, amount_in, amount_ex])
             messagebox.showinfo("Success", "Data added successfully!")
             add_window.destroy()
     except Exception as e:
@@ -114,10 +131,10 @@ if __name__ == "__main__":
     refresh_button.grid(column=0, row=1, padx=10, pady=[0,10])
 
     view_data_button = tk.Button(main, text="View Data", width=10, command=view_data)
-    view_data_button.grid(row=2, columnspan=2, pady=[0,10])
+    view_data_button.grid(column=0, row=2, pady=[0,10])
 
-    text_box = tk.Text(main, height=4, width=30, state="disabled")
-    text_box.grid(column=1, row=0, rowspan=2, padx=[0,10])
+    text_box = tk.Text(main, height=6, width=30, state="disabled")
+    text_box.grid(column=1, row=0, rowspan=3, padx=[0,10])
     refresh()
 
     main.mainloop()
