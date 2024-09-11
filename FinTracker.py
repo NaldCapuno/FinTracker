@@ -17,6 +17,7 @@ def initialize_transactions_file():
             writer.writerow(["Date", "Income", "Expense"])
 
 def add_data():
+    initialize_transactions_file()
     global in_text, ex_text, add_window
 
     add_window = tk.Tk()
@@ -42,6 +43,7 @@ def add_data():
     add_window.mainloop()
 
 def refresh():
+    initialize_transactions_file()
     total_in = 0.0
     total_ex = 0.0
 
