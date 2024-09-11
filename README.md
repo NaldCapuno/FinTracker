@@ -16,7 +16,7 @@ FinTracker is a simple personal finance tracking application built using Python 
 
 ## How it Works
 Once the app is launched, you'll see the following options:
-- **Add Data**: Opens a new window where you can input income (Amount In) and expenses (Amount Out). The data will be saved to transactions.csv.
+- **Add**: Opens a new window where you can input income (Amount In) and expenses (Amount Out). The data will be saved to transactions.csv.
 - **Refresh**: Recalculates the total income, expenses, and current balance and displays the updated values.
 - **View Data**: Opens the transactions.csv file for a detailed look at your transactions in your default spreadsheet editor.
 
