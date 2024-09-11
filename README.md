@@ -7,11 +7,6 @@ FinTracker is a simple personal finance tracking application built using Python 
 - **Refresh Balance**: Quickly calculate and display the total income, expenses, and balance.
 - **Simple GUI**: Provides an intuitive interface to interact with the application.
 
-## Requirements
-- Python 3.x
-- Tkinter (usually included with Python)
-- csv and os modules (included with Python)
-
 ## How to Use
 1. Download the EXE File:
     - Go to the [Releases](https://github.com/NaldCapuno/FinTracker/releases) page on GitHub and download the latest release EXE file.
