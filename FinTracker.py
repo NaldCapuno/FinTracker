@@ -19,7 +19,6 @@ def initialize_transactions_file():
             writer.writerow(["Date", "Income", "Expense"])
 
 def add_data():
-    initialize_transactions_file()
     global in_text, ex_text, add_window
 
     add_window = tk.Tk()
@@ -46,40 +45,37 @@ def add_data():
 
 def refresh():
     initialize_transactions_file()
-    total_in = 0.0
-    total_ex = 0.0
+    total_in = 0
+    total_ex = 0
 
-    try:
-        with open(filepath, mode='r', newline='') as file:
-            reader = csv.reader(file)
-            next(reader, None)
-            first_row = next(reader, None)
-            if first_row:
-                start_date = datetime.strptime(first_row[0], "%d/%m/%Y")
-                last_date = start_date
-                for row in reader:
-                    last_date = datetime.strptime(row[0], "%d/%m/%Y")
-            else:
-                raise ValueError("No data rows in file")
-
-        with open(filepath, mode="r", newline="") as file:
-            reader = csv.reader(file)
-            next(reader, None)
+    with open(filepath, mode='r', newline='') as file:
+        reader = csv.reader(file)
+        next(reader, None)
+        first_row = next(reader, None)
+        if first_row:
+            start_date = datetime.strptime(first_row[0], "%d/%m/%Y")
+            last_date = start_date
             for row in reader:
-                total_in += float(row[1]) if row[1] else 0
-                total_ex += float(row[2]) if row[2] else 0
-                
-    except Exception as e:
-        messagebox.showerror("Error", f"An error occurred while reading the file: {e}")
+                last_date = datetime.strptime(row[0], "%d/%m/%Y")
+
+    with open(filepath, mode="r", newline="") as file:
+        reader = csv.reader(file)
+        next(reader, None)
+        for row in reader:
+            total_in += float(row[1]) if row[1] else 0
+            total_ex += float(row[2]) if row[2] else 0
 
     total = total_in - total_ex
     text_box.config(state="normal")
     text_box.delete(1.0, tk.END)
-    text_box.insert(tk.END, f"{start_date.strftime("%b %d, %Y")} - {last_date.strftime("%b %d, %Y")}")
+    if not first_row:
+        text_box.insert(tk.END, f"No data available")
+    else:
+        text_box.insert(tk.END, f"{start_date.strftime("%b %d, %Y")} - {last_date.strftime("%b %d, %Y")}")
     text_box.insert(tk.END, f"\n------------------------------")
-    text_box.insert(tk.END, f"\nBalance: {total}\n")
-    text_box.insert(tk.END, f"\nTotal Income:  {total_in}")
-    text_box.insert(tk.END, f"\nTotal Expense: {total_ex}")
+    text_box.insert(tk.END, f"\nBalance: {total:.2f}\n")
+    text_box.insert(tk.END, f"\nTotal Income:  {total_in:.2f}")
+    text_box.insert(tk.END, f"\nTotal Expense: {total_ex:.2f}")
     text_box.config(state="disabled")
 
 def view_data():
@@ -105,14 +101,11 @@ def submit():
         messagebox.showerror("Error", "Please enter valid numeric values.")
         return
 
-    try:
-        with open(filepath, mode="a", newline="") as file:
-            writer = csv.writer(file)
-            writer.writerow([current_date, amount_in, amount_ex])
-            messagebox.showinfo("Success", "Data added successfully!")
-            add_window.destroy()
-    except Exception as e:
-        messagebox.showerror("Error", f"An error occurred while writing to the file: {e}")
+    with open(filepath, mode="a", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow([current_date, amount_in, amount_ex])
+        messagebox.showinfo("Success", "Data added successfully!")
+        add_window.destroy()
 
     refresh()
 
