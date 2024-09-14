@@ -5,11 +5,11 @@ from tkinter import messagebox
 from datetime import datetime
 
 filepath = os.path.join(os.path.expanduser("~"), "FinTracker", "data", "transactions.csv")
+directory = os.path.dirname(filepath)
 date_format = "%d/%m/%Y"
 current_date = datetime.today().strftime(date_format)
 
 def initialize_transactions_file():
-    directory = os.path.dirname(filepath)
     if not os.path.exists(directory):
         os.makedirs(directory)
 
@@ -73,7 +73,7 @@ def refresh():
     else:
         text_box.insert(tk.END, f"{start_date.strftime("%b %d, %Y")} - {last_date.strftime("%b %d, %Y")}")
     text_box.insert(tk.END, f"\n------------------------------")
-    text_box.insert(tk.END, f"\nBalance: {total:.2f}\n")
+    text_box.insert(tk.END, f"\nBalance: {total:.2f}\n\n")
     text_box.insert(tk.END, f"\nTotal Income:  {total_in:.2f}")
     text_box.insert(tk.END, f"\nTotal Expense: {total_ex:.2f}")
     text_box.config(state="disabled")
@@ -85,6 +85,18 @@ def view_data():
         elif os.name == "posix":
             if os.system(f"open {filepath}") != 0:
                 os.system(f"xdg-open {filepath}")
+        else:
+            messagebox.showerror("Error", "Unsupported operating system.")
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred: {e}")
+
+def open_path():
+    try:
+        if os.name == "nt":
+            os.startfile(directory)
+        elif os.name == "posix":
+            if os.system(f"open {directory}") != 0:
+                os.system(f"xdg-open {directory}")
         else:
             messagebox.showerror("Error", "Unsupported operating system.")
     except Exception as e:
@@ -114,7 +126,7 @@ if __name__ == "__main__":
     
     main = tk.Tk()
     main.title("FinTracker")
-    main.geometry("354x118+100+100")
+    main.geometry("354x154+100+100")
     main.resizable(False,False)
 
     add_button = tk.Button(main, text="Add", width=10, command=add_data)
@@ -126,8 +138,11 @@ if __name__ == "__main__":
     view_data_button = tk.Button(main, text="View Data", width=10, command=view_data)
     view_data_button.grid(column=0, row=2, pady=[0,10])
 
-    text_box = tk.Text(main, height=6, width=30, state="disabled")
-    text_box.grid(column=1, row=0, rowspan=3, padx=[0,10])
+    open_path_button = tk.Button(main, text="Open Path", width=10, command=open_path)
+    open_path_button.grid(column=0, row=3, pady=[0,10])
+
+    text_box = tk.Text(main, height=8, width=30, state="disabled")
+    text_box.grid(column=1, row=0, rowspan=4, padx=[0,10])
     refresh()
 
     main.mainloop()
